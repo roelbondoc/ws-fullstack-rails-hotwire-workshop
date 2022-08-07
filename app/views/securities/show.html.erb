@@ -1,0 +1,34 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title"><%= @security.symbol %></h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="card mb-4">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title is-4">Costs</p>
+              </div>
+            </div>
+
+            <div class="content">
+              <dl>
+                <dt>Buy Cost</dt>
+                <dd><%= number_to_currency @security.buy_cost %></dd>
+                <dt>Sell Cost</dt>
+                <dd><%= number_to_currency @security.sell_cost %></dd>
+                <dt>Value</dt>
+                <dd><%= number_to_currency @security.value %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

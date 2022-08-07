@@ -1,0 +1,41 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title">Dashboard</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <p class="subtitle is-5">AUM</p>
+          <p class="title is-1"><%= number_to_currency @aum %></p>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <p class="subtitle is-5">Clients</p>
+          <p class="title is-2"><%= @client_count %></p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box">
+          <p class="subtitle is-5">Accounts</p>
+          <p class="title is-2"><%= @account_count %></p>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <p class="subtitle is-5">Biggest Account</p>
+          <p class="title is-3"><%= @biggest_account[:account].canonical_id %> (<%= @biggest_account[:account].name %>)</p>
+          <p class="title is-2"><%= number_to_currency @biggest_account[:aum] %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

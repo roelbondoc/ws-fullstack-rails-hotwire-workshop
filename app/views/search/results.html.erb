@@ -1,0 +1,29 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title">Search</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container mb-4">
+    <%= form_tag search_results_path, method: :get do %>
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <%= text_field_tag 'q', nil, class: 'input', placeholder: 'Find a client, account, portfolio, security, etc.' %>
+        </div>
+        <div class="control">
+          <%= submit_tag 'Search', class: 'button is-primary' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="container">
+    <p class="content"><%= pluralize @records.count, 'record' %></p>
+    <% @records.each do |record| %>
+      <div class="box">
+        <%= render partial: record.searchable_type.downcase, locals: { record: record.searchable } %>
+      </div>
+    <% end %>
+    <%= paginate @records %>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title"><%= @portfolio.name %></h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title is-4">Allocations</p>
+              </div>
+            </div>
+
+            <% @portfolio.allocations.each do |allocation| %>
+              <p><%= link_to "#{allocation.asset_class.name} - #{allocation.amount}%", asset_class_path(allocation.asset_class), class: 'subtitle is-4' %></p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

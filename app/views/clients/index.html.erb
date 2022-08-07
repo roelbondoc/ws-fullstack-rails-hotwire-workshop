@@ -1,0 +1,58 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title">Clients</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container mb-4">
+    <form id="filter-form" class="is-hidden is-inline-block">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <%= text_field_tag 'q', nil, class: 'input', placeholder: 'Find a client' %>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'city', options_for_select(Client.cities), include_blank: 'City' %>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'country', options_for_select(Client.countries), include_blank: 'Country' %>
+          </div>
+        </div>
+        <div class="control">
+          <input class="button is-info" type="submit" value="Filter">
+        </div>
+      </div>
+    </form>
+    <button class="button is-inline-block" onclick="document.getElementById('filter-form').classList.toggle('is-hidden');">&harr;</button>
+  </div>
+  <div class="container">
+    <table class="table is-bordered is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>Country</th>
+          <th>Phone</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @clients.each do |client| %>
+          <tr>
+            <th class="has-text-left"><%= client.name %></th>
+            <td><%= client.address %></td>
+            <td><%= client.city %></td>
+            <td><%= client.country %></td>
+            <td><%= client.phone %></td>
+            <td><%= link_to 'View', client_path(client), class: 'button is-link' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @clients %>
+  </div>
+</section>

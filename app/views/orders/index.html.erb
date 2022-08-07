@@ -1,0 +1,107 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title">Orders</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container mb-4">
+    <form id="filter-form" class="is-hidden is-inline-block">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'client_id', options_from_collection_for_select(Client.all.order(:name), 'id', 'name'), include_blank: 'Client' %>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'account_id', options_from_collection_for_select(Account.all.order(:canonical_id), 'id', 'canonical_id'), include_blank: 'Account' %>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'security_id', options_from_collection_for_select(Security.all.order(:symbol), 'id', 'symbol'), include_blank: 'Security' %>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'order_type', options_for_select(Order.distinct(:order_type).pluck(:order_type).sort), include_blank: 'Type' %>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'status', options_for_select(%w(Rejected Accepted)), include_blank: 'Status' %>
+          </div>
+        </div>
+        <div class="control">
+          <input class="button is-info" type="submit" value="Filter">
+        </div>
+      </div>
+    </form>
+    <button class="button is-inline-block" onclick="document.getElementById('filter-form').classList.toggle('is-hidden');">&harr;</button>
+  </div>
+  <div class="container">
+    <div class="buttons is-pulled-right">
+      <% if Order.orders_in_process_count.zero? %>
+        <%= form_with url: accept_all_orders_path, class: 'is-inline-block mr-1' do |f| %>
+          <%= hidden_field_tag 'account_id', params[:account_id] %>
+          <%= hidden_field_tag 'security_id', params[:security_id] %>
+          <%= hidden_field_tag 'order_type', params[:order_type] %>
+          <%= hidden_field_tag 'status', params[:status] %>
+          <%= f.submit "Accept All (#{@orders.total_count})", class: 'button is-success' %>
+        <% end %>
+        <%= form_with url: reject_all_orders_path, class: 'is-inline-block' do |f| %>
+          <%= hidden_field_tag 'account_id', params[:account_id] %>
+          <%= hidden_field_tag 'security_id', params[:security_id] %>
+          <%= hidden_field_tag 'order_type', params[:order_type] %>
+          <%= hidden_field_tag 'status', params[:status] %>
+          <%= f.submit "Reject All (#{@orders.total_count})", class: 'button is-danger' %>
+        <% end %>
+      <% else %>
+        Processing <%= pluralize(Order.orders_in_process_count, 'order') %>.
+      <% end %>
+    </div>
+    <table class="table is-bordered is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Security</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Posted</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <th class="has-text-left"><%= order.account.canonical_id %></th>
+            <td><%= order.security.symbol %></td>
+            <td><%= order.order_type %></td>
+            <% if order.order_type[/QUANTITY/] %>
+              <td class="has-text-right"><%= order.amount %></td>
+            <% else %>
+              <td class="has-text-right"><%= number_to_currency order.amount %></td>
+            <% end %>
+            <td><%= order.posted_at %></td>
+            <td>
+              <% if order.rejected_at %>
+                <span class="has-text-danger"><%= order.rejected_at %></span>
+              <% elsif order.accepted_at %>
+                <span class="has-text-success"><%= order.accepted_at %></span>
+              <% else %>
+                <%= form_with url: accept_order_path(order), class: 'is-inline mr-1' do |f| %>
+                  <%= f.submit 'Accept', class: 'button is-success' %>
+                <% end %>
+                <%= form_with url: reject_order_path(order), class: 'is-inline' do |f| %>
+                  <%= f.submit 'Reject', class: 'button is-danger' %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @orders %>
+  </div>
+</section>

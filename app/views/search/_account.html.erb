@@ -1,0 +1,9 @@
+<div class="columns">
+  <div class="column">
+    <h5 class="subtitle is-5">Account</h5>
+    <h4 class="title is-4"><%= record.canonical_id %> - <%= record.name %></h4>
+  </div>
+  <div class="column">
+    <%= link_to 'View', client_account_path(record.client, record), class: 'button is-link is-pulled-right' %>
+  </div>
+</div>

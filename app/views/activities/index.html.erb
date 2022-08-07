@@ -1,0 +1,69 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title">Activities</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container mb-4">
+    <form id="filter-form" class="is-hidden is-inline-block">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'client_id', options_from_collection_for_select(Client.all.order(:name), 'id', 'name'), include_blank: 'Client' %>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'account_id', options_from_collection_for_select(Account.all.order(:canonical_id), 'id', 'canonical_id'), include_blank: 'Account' %>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'security_id', options_from_collection_for_select(Security.all.order(:symbol), 'id', 'symbol'), include_blank: 'Security' %>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <%= select_tag 'activity_type', options_for_select(Activity.distinct(:activity_type).pluck(:activity_type).sort), include_blank: 'Type' %>
+          </div>
+        </div>
+        <div class="control">
+          <input class="button is-info" type="submit" value="Filter">
+        </div>
+      </div>
+    </form>
+    <button class="button is-inline-block" onclick="document.getElementById('filter-form').classList.toggle('is-hidden');">&harr;</button>
+  </div>
+  <div class="container">
+    <table class="table is-bordered is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Security</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Posted</th>
+          <th>Effective</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @activities.each do |activity| %>
+          <tr>
+            <th class="has-text-left"><%= activity.account.canonical_id %></th>
+            <td><%= activity.security.symbol %></td>
+            <td><%= activity.activity_type %></td>
+            <% if activity.activity_type[/QUANTITY/] %>
+              <td class="has-text-right"><%= activity.amount %></td>
+            <% else %>
+              <td class="has-text-right"><%= number_to_currency activity.amount %></td>
+            <% end %>
+            <td><%= activity.posted_at %></td>
+            <td><%= activity.effective_on %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @activities %>
+  </div>
+</section>

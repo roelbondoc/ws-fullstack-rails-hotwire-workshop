@@ -1,0 +1,45 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title"><%= @client.name %></h1>
+    <h2 class="subtitle"><%= @client.phone %></h2>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="card mb-4">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title is-4">Address</p>
+              </div>
+            </div>
+
+            <div class="content">
+              <%= @client.address %><br>
+              <%= @client.city %> <%= @client.province %><br>
+              <%= @client.postal %><br>
+              <%= @client.country %><br>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title is-4">Accounts</p>
+              </div>
+            </div>
+
+            <% @client.accounts.each do |account| %>
+              <p><%= link_to "#{account.canonical_id} - #{account.name}", client_account_path(@client, account), class: 'subtitle is-4' %></p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

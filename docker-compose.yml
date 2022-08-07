@@ -10,9 +10,22 @@ services:
       - app
     ports:
       - 3000:80
+
   app:
     build: .
     command: bin/rails server -b 0.0.0.0 -p 3000
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgres://app:password@db/app_development
+    volumes:
+      - .:/app
+    links:
+      - db
+      - redis
+
+  worker:
+    build: .
+    command: sidekiq
     environment:
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgres://app:password@db/app_development

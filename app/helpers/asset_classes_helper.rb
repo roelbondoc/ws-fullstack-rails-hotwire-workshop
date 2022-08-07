@@ -1,0 +1,2 @@
+module AssetClassesHelper
+end

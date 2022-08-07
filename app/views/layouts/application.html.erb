@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>App</title>
+    <title>Simply Wealthy</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -10,6 +10,49 @@
   </head>
 
   <body>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item has-text-black has-text-weight-bold is-family-code" href="/">
+          SIMPLY WEALTHY
+        </a>
+      </div>
+
+      <div class="navbar-start">
+        <%= link_to 'Dashboard', root_path, class: 'navbar-item' %>
+        <%= link_to 'Clients', clients_path, class: 'navbar-item' %>
+        <%= link_to 'Orders', orders_path, class: 'navbar-item' %>
+        <%= link_to 'Activity', activities_path, class: 'navbar-item' %>
+        <%= link_to 'Portfolios', portfolios_path, class: 'navbar-item' %>
+        <%= link_to 'Securities', securities_path, class: 'navbar-item' %>
+      </div>
+
+      <div class="navbar-end">
+        <div class="buttons">
+          <button class="button is-primary" onclick="document.getElementById('search-modal').classList.add('is-active');">Search</button>
+          <div id="search-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <p class="modal-card-title">Search Everything</p>
+                <button class="delete" aria-label="close" onclick="document.getElementById('search-modal').classList.remove('is-active');"></button>
+              </header>
+              <%= form_tag search_results_path, method: :get do %>
+                <section class="modal-card-body">
+                  <div class="field is-fullwidth">
+                    <div class="control">
+                      <%= text_field_tag 'q', nil, class: 'input', placeholder: 'Find a client, account, portfolio, security, etc.' %>
+                    </div>
+                  </div>
+                </section>
+                <footer class="modal-card-foot">
+                  <%= submit_tag 'Search', class: 'button is-primary' %>
+                </footer>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
     <%= yield %>
   </body>
 </html>

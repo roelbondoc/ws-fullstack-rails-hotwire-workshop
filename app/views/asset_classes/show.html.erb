@@ -1,0 +1,36 @@
+<section class="section">
+  <div class="container">
+    <h1 class="title"><%= @asset_class.name %></h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="card">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <p class="title is-4">Securities</p>
+          </div>
+        </div>
+
+        <table class="table is-bordered is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @asset_class.securities.each do |security| %>
+              <tr>
+                <th class="has-text-left"><%= security.symbol %></th>
+                <td class="has-text-right"><%= number_to_currency security.value %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
