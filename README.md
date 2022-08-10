@@ -37,22 +37,27 @@ adheres to a basic Rails application framework.
 git clone https://github.com/roelbondoc/ws-fullstack-rails-hotwire-workshop
 ```
 
-2. Build the Docker images:
+2. Change to the newly created folder:
+```
+cd ws-fullstack-rails-hotwire-workshop
+```
+
+3. Build the Docker images:
 ```
 docker-compose build
 ```
 
-3. Start the application:
+4. Start the application:
 ```
 docker-compose up
 ```
 
-4. Prepare the database (this may take a while to seed the data):
+5. In a separate terminal prepare the database (this may take a while to seed the data):
 ```
 docker-compose run --rm app rails db:reset
 ```
 
-5. Verify the application is running by visiting [http://localhost:3000](http://localhost:3000).
+6. Verify the application is running by visiting [http://localhost:3000](http://localhost:3000).
 
 ## Improvement 0 - Install Importmap/StimulusJS/Turbo
 
