@@ -19,5 +19,10 @@ Rails.application.routes.draw do
 
   get '/search/results', to: 'search#results'
 
+  get 'dashboard/client_count', to: 'dashboard#client_count'
+  get 'dashboard/account_count', to: 'dashboard#account_count'
+  get 'dashboard/biggest_account', to: 'dashboard#biggest_account'
+  get 'dashboard/aum', to: 'dashboard#aum'
+
   root 'dashboard#index'
 end

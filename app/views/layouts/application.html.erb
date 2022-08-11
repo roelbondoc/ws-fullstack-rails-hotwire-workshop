@@ -7,6 +7,7 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application" %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
@@ -27,25 +28,27 @@
       </div>
 
       <div class="navbar-end">
-        <div class="buttons">
-          <button class="button is-primary" onclick="document.getElementById('search-modal').classList.add('is-active');">Search</button>
-          <div id="search-modal" class="modal">
+        <div class="buttons" data-controller="modal-toggle">
+          <button class="button is-primary" data-action="modal-toggle#show">Search</button>
+          <div class="modal" data-modal-toggle-target="modal">
             <div class="modal-background"></div>
-            <div class="modal-card">
+            <div id="site-search-card" class="modal-card" data-turbo-permanent>
               <header class="modal-card-head">
                 <p class="modal-card-title">Search Everything</p>
-                <button class="delete" aria-label="close" onclick="document.getElementById('search-modal').classList.remove('is-active');"></button>
+                <button class="delete" aria-label="close" data-action="modal-toggle#hide"></button>
               </header>
-              <%= form_tag search_results_path, method: :get do %>
+              <%= form_tag search_results_path, method: :get, data: { turbo_frame: 'search-results', controller: 'auto-submit' } do %>
                 <section class="modal-card-body">
                   <div class="field is-fullwidth">
                     <div class="control">
-                      <%= text_field_tag 'q', nil, class: 'input', placeholder: 'Find a client, account, portfolio, security, etc.' %>
+                      <%= text_field_tag 'q', nil, class: 'input', placeholder: 'Find a client, account, portfolio, security, etc.', data: { action: 'keyup->auto-submit#submit' } %>
                     </div>
+                  </div>
+                  <div>
+                    <%= turbo_frame_tag 'search-results' %>
                   </div>
                 </section>
                 <footer class="modal-card-foot">
-                  <%= submit_tag 'Search', class: 'button is-primary' %>
                 </footer>
               <% end %>
             </div>

@@ -1,0 +1,35 @@
+<%= turbo_frame_tag "activity-list-#{activities.current_page}", target: '_top' do %>
+  <table class="table is-bordered is-fullwidth is-striped is-hoverable">
+    <thead>
+      <tr>
+        <th>Account</th>
+        <th>Security</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Posted</th>
+        <th>Effective</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% activities.each do |activity| %>
+        <tr>
+          <th class="has-text-left"><%= activity.account.canonical_id %></th>
+          <td><%= activity.security.symbol %></td>
+          <td><%= activity.activity_type %></td>
+          <% if activity.activity_type[/QUANTITY/] %>
+            <td class="has-text-right"><%= activity.amount %></td>
+          <% else %>
+            <td class="has-text-right"><%= number_to_currency activity.amount %></td>
+          <% end %>
+          <td><%= activity.posted_at %></td>
+          <td><%= activity.effective_on %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% if activities.next_page %>
+    <%= turbo_frame_tag "activity-list-#{activities.next_page}", src: activities_path(page: activities.next_page), loading: 'lazy', target: '_top' do %>
+      Loading...
+    <% end %>
+  <% end %>
+<% end %>

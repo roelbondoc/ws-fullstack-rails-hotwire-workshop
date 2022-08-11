@@ -18,12 +18,14 @@
     <% end %>
   </div>
   <div class="container">
-    <p class="content"><%= pluralize @records.count, 'record' %></p>
-    <% @records.each do |record| %>
-      <div class="box">
-        <%= render partial: record.searchable_type.downcase, locals: { record: record.searchable } %>
-      </div>
+    <%= turbo_frame_tag 'search-results' do %>
+      <p class="content has-text-black"><%= pluralize @records.total_count, 'record' %></p>
+      <% @records.each do |record| %>
+        <div class="box">
+          <%= render partial: record.searchable_type.downcase, locals: { record: record.searchable } %>
+        </div>
+      <% end %>
+      <%= paginate @records %>
     <% end %>
-    <%= paginate @records %>
   </div>
 </section>

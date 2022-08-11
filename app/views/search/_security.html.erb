@@ -4,6 +4,6 @@
     <h4 class="title is-4"><%= record.symbol %></h4>
   </div>
   <div class="column">
-    <%= link_to 'View', security_path(record), class: 'button is-link is-pulled-right' %>
+    <%= link_to 'View', security_path(record), class: 'button is-link is-pulled-right', data: { turbo_frame: '_top' } %>
   </div>
 </div>

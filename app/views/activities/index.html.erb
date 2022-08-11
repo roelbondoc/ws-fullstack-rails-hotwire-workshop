@@ -5,8 +5,8 @@
 </section>
 
 <section class="section">
-  <div class="container mb-4">
-    <form id="filter-form" class="is-hidden is-inline-block">
+  <div class="container mb-4" data-controller="filter-toggle">
+    <form class="is-hidden is-inline-block" data-turbo-frame="index-list" data-filter-toggle-target="form">
       <div class="field is-grouped is-grouped-multiline">
         <div class="control">
           <div class="select">
@@ -33,37 +33,11 @@
         </div>
       </div>
     </form>
-    <button class="button is-inline-block" onclick="document.getElementById('filter-form').classList.toggle('is-hidden');">&harr;</button>
+    <button class="button is-inline-block" data-action="filter-toggle#toggle">&harr;</button>
   </div>
-  <div class="container">
-    <table class="table is-bordered is-fullwidth is-striped is-hoverable">
-      <thead>
-        <tr>
-          <th>Account</th>
-          <th>Security</th>
-          <th>Type</th>
-          <th>Amount</th>
-          <th>Posted</th>
-          <th>Effective</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @activities.each do |activity| %>
-          <tr>
-            <th class="has-text-left"><%= activity.account.canonical_id %></th>
-            <td><%= activity.security.symbol %></td>
-            <td><%= activity.activity_type %></td>
-            <% if activity.activity_type[/QUANTITY/] %>
-              <td class="has-text-right"><%= activity.amount %></td>
-            <% else %>
-              <td class="has-text-right"><%= number_to_currency activity.amount %></td>
-            <% end %>
-            <td><%= activity.posted_at %></td>
-            <td><%= activity.effective_on %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <%= paginate @activities %>
-  </div>
+  <%= turbo_frame_tag 'index-list' do %>
+    <div class="container">
+      <%= render partial: 'activity_list', locals: { activities: @activities } %>
+    </div>
+  <% end %>
 </section>

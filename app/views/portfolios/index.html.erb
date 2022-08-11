@@ -5,8 +5,8 @@
 </section>
 
 <section class="section">
-  <div class="container mb-4">
-    <form id="filter-form" class="is-hidden is-inline-block">
+  <div class="container mb-4" data-controller="filter-toggle">
+    <form class="is-hidden is-inline-block" data-turbo-frame="index-list" data-filter-toggle-target="form">
       <div class="field is-grouped is-grouped-multiline">
         <div class="control">
           <%= text_field_tag 'q', nil, class: 'input', placeholder: 'Find a portfolio' %>
@@ -16,37 +16,39 @@
         </div>
       </div>
     </form>
-    <button class="button is-inline-block" onclick="document.getElementById('filter-form').classList.toggle('is-hidden');">&harr;</button>
+    <button class="button is-inline-block" data-action="filter-toggle#toggle">&harr;</button>
   </div>
-  <div class="container">
-    <table class="table is-bordered is-fullwidth is-striped is-hoverable">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Asset Classes</th>
-          <th>Accounts</th>
-          <th>Clients</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @portfolios.each do |portfolio| %>
+  <%= turbo_frame_tag 'index-list' do %>
+    <div class="container">
+      <table class="table is-bordered is-fullwidth is-striped is-hoverable">
+        <thead>
           <tr>
-            <th class="has-text-left"><%= portfolio.name %></th>
-            <td>
-              <ul>
-                <% portfolio.allocations.each do |allocation| %>
-                  <li><%= allocation.asset_class.name %> (<%= allocation.amount %>%)</li>
-                <% end %>
-              </ul>
-            </td>
-            <td><%= portfolio.accounts.count %></td>
-            <td><%= portfolio.clients.count %></td>
-            <td><%= link_to 'View', portfolio_path(portfolio), class: 'button is-link' %></td>
+            <th>Name</th>
+            <th>Asset Classes</th>
+            <th>Accounts</th>
+            <th>Clients</th>
+            <th></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <%= paginate @portfolios %>
-  </div>
+        </thead>
+        <tbody>
+          <% @portfolios.each do |portfolio| %>
+            <tr>
+              <th class="has-text-left"><%= portfolio.name %></th>
+              <td>
+                <ul>
+                  <% portfolio.allocations.each do |allocation| %>
+                    <li><%= allocation.asset_class.name %> (<%= allocation.amount %>%)</li>
+                  <% end %>
+                </ul>
+              </td>
+              <td><%= portfolio.accounts.count %></td>
+              <td><%= portfolio.clients.count %></td>
+              <td><%= link_to 'View', portfolio_path(portfolio), class: 'button is-link', data: { turbo_frame: '_top' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @portfolios %>
+    </div>
+  <% end %>
 </section>

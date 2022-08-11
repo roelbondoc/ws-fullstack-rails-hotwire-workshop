@@ -1,8 +1,20 @@
 class DashboardController < ApplicationController
   def index
+  end
+
+  def client_count
     @client_count = get_client_count
+  end
+
+  def account_count
     @account_count = get_account_count
+  end
+
+  def biggest_account
     @biggest_account = get_biggest_account
+  end
+
+  def aum
     @aum = get_aum
   end
 

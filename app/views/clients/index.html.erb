@@ -5,8 +5,8 @@
 </section>
 
 <section class="section">
-  <div class="container mb-4">
-    <form id="filter-form" class="is-hidden is-inline-block">
+  <div class="container mb-4" data-controller="filter-toggle">
+    <form class="is-hidden is-inline-block" data-turbo-frame="index-list" data-filter-toggle-target="form">
       <div class="field is-grouped is-grouped-multiline">
         <div class="control">
           <%= text_field_tag 'q', nil, class: 'input', placeholder: 'Find a client' %>
@@ -26,33 +26,35 @@
         </div>
       </div>
     </form>
-    <button class="button is-inline-block" onclick="document.getElementById('filter-form').classList.toggle('is-hidden');">&harr;</button>
+    <button class="button is-inline-block" data-action="filter-toggle#toggle">&harr;</button>
   </div>
-  <div class="container">
-    <table class="table is-bordered is-fullwidth is-striped is-hoverable">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Address</th>
-          <th>City</th>
-          <th>Country</th>
-          <th>Phone</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @clients.each do |client| %>
+  <%= turbo_frame_tag 'index-list' do %>
+    <div class="container">
+      <table class="table is-bordered is-fullwidth is-striped is-hoverable">
+        <thead>
           <tr>
-            <th class="has-text-left"><%= client.name %></th>
-            <td><%= client.address %></td>
-            <td><%= client.city %></td>
-            <td><%= client.country %></td>
-            <td><%= client.phone %></td>
-            <td><%= link_to 'View', client_path(client), class: 'button is-link' %></td>
+            <th>Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Phone</th>
+            <th></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <%= paginate @clients %>
-  </div>
+        </thead>
+        <tbody>
+          <% @clients.each do |client| %>
+            <tr>
+              <th class="has-text-left"><%= client.name %></th>
+              <td><%= client.address %></td>
+              <td><%= client.city %></td>
+              <td><%= client.country %></td>
+              <td><%= client.phone %></td>
+              <td><%= link_to 'View', client_path(client), class: 'button is-link', data: { turbo_frame: '_top' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @clients %>
+    </div>
+  <% end %>
 </section>

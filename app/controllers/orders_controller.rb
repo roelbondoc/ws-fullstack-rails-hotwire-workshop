@@ -7,27 +7,27 @@ class OrdersController < ApplicationController
   def accept
     @order = Order.find(params[:id])
     @order.slowly.update(rejected_at: nil, accepted_at: Time.current)
-    redirect_to orders_path
   end
 
   def reject
     @order = Order.find(params[:id])
     @order.slowly.update(accepted_at: nil, rejected_at: Time.current)
-    redirect_to orders_path
   end
 
   def accept_all
     @orders.find_each do |order|
       OrderAcceptJob.perform_later order
     end
-    redirect_to orders_path
+
+    render partial: 'bulk_order'
   end
 
   def reject_all
     @orders.find_each do |order|
       OrderRejectJob.perform_later order
     end
-    redirect_to orders_path
+
+    render partial: 'bulk_order'
   end
 
   private

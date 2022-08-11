@@ -1,0 +1,7 @@
+<%= turbo_frame_tag 'dashboard-biggest-account' do %>
+  <div class="box">
+    <p class="subtitle is-5">Biggest Account</p>
+    <p class="title is-3"><%= @biggest_account[:account].canonical_id %> (<%= @biggest_account[:account].name %>)</p>
+    <p class="title is-2"><%= number_to_currency @biggest_account[:aum] %></p>
+  </div>
+<% end %>

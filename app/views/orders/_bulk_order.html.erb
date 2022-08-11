@@ -1,0 +1,7 @@
+<%= turbo_frame_tag 'bulk-order-action' do %>
+  <% if Order.orders_in_process_count.zero? %>
+    Processing complete!
+  <% else %>
+    Processing <%= pluralize(Order.orders_in_process_count, 'order') %>.
+  <% end %>
+<% end %>
