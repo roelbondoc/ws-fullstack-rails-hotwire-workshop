@@ -62,6 +62,7 @@ portfolio_ids.each do |portfolio_id|
   end
 end
 
+# Reduce this if you want to speed up seeding
 client_ids = 1000.times.map do
   Client.create(
     name: Faker::Name.name,
@@ -97,6 +98,7 @@ client_ids.flat_map do |client_id|
   end
 end
 
+# Reduce this if you want to speed up seeding
 1000.times do
   Order.create(
     account_id: account_ids.sample,
@@ -107,6 +109,7 @@ end
   )
 end
 
+# Reduce this if you want to speed up seeding
 1000.times do
   posted_at = Time.now - rand(60).days
   Activity.create(
