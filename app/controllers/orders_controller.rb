@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   before_action :load_orders, except: %i[accept reject]
 
   def index
+    @orders = @orders.page(params[:page]).per(50)
   end
 
   def accept
@@ -33,7 +34,7 @@ class OrdersController < ApplicationController
   private
 
   def load_orders
-    @orders = Order.order(posted_at: :desc).includes(:account, :security).page(params[:page]).per(50)
+    @orders = Order.order(posted_at: :desc).includes(:account, :security)
     @orders = @orders.where(accounts: { client_id: params[:client_id] }).joins(:account) if params[:client_id].present?
     @orders = @orders.where(account_id: params[:account_id]) if params[:account_id].present?
     @orders = @orders.where(security_id: params[:security_id]) if params[:security_id].present?
