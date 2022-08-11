@@ -7,12 +7,12 @@ class OrdersController < ApplicationController
 
   def accept
     @order = Order.find(params[:id])
-    @order.slowly.update(rejected_at: nil, accepted_at: Time.current)
+    @order.update(rejected_at: nil, accepted_at: Time.current)
   end
 
   def reject
     @order = Order.find(params[:id])
-    @order.slowly.update(accepted_at: nil, rejected_at: Time.current)
+    @order.update(accepted_at: nil, rejected_at: Time.current)
   end
 
   def accept_all
